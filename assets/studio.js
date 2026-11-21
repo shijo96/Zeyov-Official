@@ -431,6 +431,8 @@
     return { name, label: `${p[0]} DTF`, box: b };
   }
   const totalQty = () => SIZES.reduce((a, s) => a + (st.qty[s] || 0), 0);
+  // Embroidery takes about 2 weeks; DTF prints 7–8 days
+  function isEmb() { return ['front', 'back'].some((side) => { const pc = printClass(side); return pc && /^Embroidery/.test(pc.name); }); }
   function renderQuote() {
     const q = totalQty();
     const basePrice = priceOf(base());
@@ -449,6 +451,7 @@
       html += `<div class="zs-qline zs-qline--muted"><span>Printing<small>Add a design to see the print cost</small></span><b>—</b></div>`;
     }
     html += `<div class="zs-qeq">${money(basePrice)} T-shirt + ${money(printSum)} printing = <b>${money(per)}</b></div>`;
+    html += `<div class="zs-qeta">${isEmb() ? '🧵 Embroidery orders are delivered in <b>about 2 weeks</b>' : '🚚 Printed in 24–48 hrs · delivered in <b>7–8 days</b>'}</div>`;
     $('[data-quote-rows]').innerHTML = html;
     $('[data-per]').textContent = money(per);
     $('[data-qty-out]').textContent = `${q} pc${q === 1 ? '' : 's'}`;
@@ -573,7 +576,7 @@
     try {
       const v = await resolveVariant();
       const id = 'ZS-' + Date.now().toString(36).toUpperCase().slice(-6);
-      const props = { Size: sizes[0], Colour: st.color, 'Design ID': id, 'Sizes in this design': sizes.map((s) => `${s}×${st.qty[s]}`).join(', ') };
+      const props = { Size: sizes[0], Colour: st.color, 'Design ID': id, 'Sizes in this design': sizes.map((s) => `${s}×${st.qty[s]}`).join(', '), Delivery: isEmb() ? 'About 2 weeks (embroidery)' : '7–8 days' };
       const files = {};
       for (const side of ['front', 'back']) {
         const sum = sideSummary(side); const S = side === 'front' ? 'Front' : 'Back';

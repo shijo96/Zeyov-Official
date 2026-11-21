@@ -172,3 +172,6 @@
 .zs-tipsgrid > div { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
 .zs-tipsgrid article { padding: 16px; border-radius: 16px; background: #fff; border: 1px solid var(--line); display: grid; gap: 6px; font-size: 13px; }
 .zs-tipsgrid article p { color: var(--muted); }
+
+.zs-qrows .zs-qeta { display: block; padding: 8px 10px; border-radius: 10px; border: 1px dashed rgba(240,212,154,.35); font-size: 12.5px; color: #E6D2AE; text-align: center; }
+.zs-qeta b { color: #F0D49A; }

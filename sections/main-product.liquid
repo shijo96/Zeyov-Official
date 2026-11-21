@@ -147,11 +147,28 @@
         </div>
       {%- endif -%}
 
-      <div class="eta" data-eta data-min="{{ section.settings.eta_min }}" data-max="{{ section.settings.eta_max }}">
+      {%- liquid
+        assign emb_check = product.title | append: ' ' | append: product.type | append: ' ' | append: product.tags | downcase
+        assign is_emb = false
+        if emb_check contains 'embroider'
+          assign is_emb = true
+        endif
+        assign eta_a = section.settings.eta_min
+        assign eta_b = section.settings.eta_max
+        if is_emb
+          assign eta_a = section.settings.emb_days
+          assign eta_b = section.settings.emb_days
+        endif
+      -%}
+      <div class="eta" data-eta data-min="{{ eta_a }}" data-max="{{ eta_b }}">
         {% render 'icon', name: 'truck' %}
         <div>
-          <b>Get it by <span data-eta-date>{{ section.settings.eta_min }}–{{ section.settings.eta_max }} days</span></b>
-          <span class="muted">Printed to order in 24–48 hrs, then shipped across India.</span>
+          <b>Get it by <span data-eta-date>{% if is_emb %}about 2 weeks{% else %}{{ eta_a }}–{{ eta_b }} days{% endif %}</span></b>
+          {%- if is_emb -%}
+            <span class="muted">Embroidered to order by hand, delivered in about 2 weeks across India.</span>
+          {%- else -%}
+            <span class="muted">Printed to order in 24–48 hrs, then shipped across India.</span>
+          {%- endif -%}
         </div>
       </div>
 
@@ -171,8 +188,12 @@
         </div></details>
         <details><summary>Delivery &amp; returns{% render 'icon', name: 'chev' %}</summary><div class="rte">
           <ul>
-            <li><b>Printed to order</b> in 24–48 hours, dispatched from day 2.</li>
-            <li><b>Delivered in {{ section.settings.eta_min }}–{{ section.settings.eta_max }} days</b> from your order across India.</li>
+            {%- if is_emb -%}
+              <li><b>Embroidered to order</b> — embroidery designs take about 2 weeks from order to delivery.</li>
+            {%- else -%}
+              <li><b>Printed to order</b> in 24–48 hours, dispatched from day 2.</li>
+              <li><b>Delivered in {{ section.settings.eta_min }}–{{ section.settings.eta_max }} days</b> from your order across India.</li>
+            {%- endif -%}
             <li><b>Free delivery</b> on online payment · Cash on delivery ₹{{ settings.cod_fee | default: 80 }} extra.</li>
             <li><b>7-day returns:</b> return or exchange within 7 days of delivery, unworn, unwashed and with the Zeyov tag attached and unbroken.</li>
           </ul>
@@ -219,6 +240,7 @@
     { "type": "header", "content": "Delivery estimate" },
     { "type": "range", "id": "eta_min", "label": "Delivery from (days after order)", "min": 2, "max": 15, "step": 1, "default": 7 },
     { "type": "range", "id": "eta_max", "label": "Delivery up to (days after order)", "min": 3, "max": 20, "step": 1, "default": 8 },
+    { "type": "range", "id": "emb_days", "label": "Embroidery delivery (days after order)", "info": "Used for products with \"embroidery\" in the title, type or tags.", "min": 7, "max": 30, "step": 1, "default": 14 },
     { "type": "header", "content": "Pre-booking", "info": "Shown when the chosen size is out of stock. To take full-payment pre-orders on a product, turn on \"Continue selling when out of stock\" for its variants in Shopify admin." },
     { "type": "checkbox", "id": "prebook", "label": "Show pre-booking when out of stock", "default": true },
     { "type": "textarea", "id": "prebook_text", "label": "Pre-booking message", "default": "Every Zeyov tee is printed to order. Reserve this size now and we'll ship it the moment it's back. We confirm the dispatch date on WhatsApp within 24 hours." },

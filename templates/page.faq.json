@@ -40,7 +40,7 @@
      "settings": {
       "category": "Printing & delivery",
       "question": "Why does delivery take a few days?",
-      "answer": "<p>Every Zeyov tee is <b>printed to order</b> for you. Printing takes 24–48 hours, we dispatch from day 2, and your order reaches you in about <b>7–8 days</b> from the day you order.</p>"
+      "answer": "<p>Every Zeyov tee is <b>printed to order</b> for you. Printing takes 24–48 hours, we dispatch from day 2, and your order reaches you in about <b>7–8 days</b> from the day you order. Embroidery designs take about 2 weeks.</p>"
      }
     },
     "q06": {
@@ -162,6 +162,14 @@
       "question": "How do I write a review?",
       "answer": "<p>Open the product page and tap <b>Write a review</b>. No account is needed. Reviews are checked before they're published so every review on Zeyov is from a real customer.</p>"
      }
+    },
+    "q21": {
+     "type": "question",
+     "settings": {
+      "category": "Printing & delivery",
+      "question": "How long do embroidery designs take?",
+      "answer": "<p>Embroidered tees are stitched to order, so they take a little longer: about <b>2 weeks</b> from your order to delivery. Printed tees arrive in 7–8 days. If your order has both, we ship everything together when the embroidery is ready.</p>"
+     }
     }
    },
    "block_order": [
@@ -170,6 +178,7 @@
     "q03",
     "q04",
     "q05",
+    "q21",
     "q06",
     "q07",
     "q08",

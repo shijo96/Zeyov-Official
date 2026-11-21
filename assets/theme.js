@@ -514,7 +514,7 @@
       const f = (d, wd) => d.toLocaleDateString('en-IN', wd ? { weekday: 'short', day: 'numeric', month: 'short' } : { day: 'numeric', month: 'short' });
       const a = add(Number(eta.dataset.min) || 7); const b = add(Number(eta.dataset.max) || 8);
       const out = eta.querySelector('[data-eta-date]');
-      if (out) out.textContent = a.getMonth() === b.getMonth() ? `${a.getDate()}–${f(b, false)}` : `${f(a, false)} – ${f(b, false)}`;
+      if (out) out.textContent = a.toDateString() === b.toDateString() ? f(b, true) : a.getMonth() === b.getMonth() ? `${a.getDate()}–${f(b, false)}` : `${f(a, false)} – ${f(b, false)}`;
     }
     const sticky = rootEl.querySelector('[data-sticky-atc]');
     const buy = rootEl.querySelector('[data-buy]');
