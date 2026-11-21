@@ -1,0 +1,42 @@
+<header class="header" data-header>
+  <div class="wrap header__inner">
+    <div class="header__left">
+      <button class="icon-btn header__menu" data-open-menu aria-label="Open menu">{% render 'icon', name: 'menu' %}</button>
+      <nav class="header__nav" aria-label="Main">
+        {%- assign menu = linklists[section.settings.menu] -%}
+        {%- if menu.links.size > 0 -%}
+          {%- for link in menu.links -%}
+            <div class="nav-item">
+              <a href="{{ link.url }}" class="nav-link" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a>
+              {%- if link.links.size > 0 -%}<div class="dropdown">{%- for c in link.links -%}<a href="{{ c.url }}">{{ c.title }}</a>{%- endfor -%}</div>{%- endif -%}
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <a class="nav-link" href="{{ routes.collections_url }}">Shop</a>
+          <a class="nav-link" href="/pages/studio">Studio</a>
+          <a class="nav-link" href="/pages/orders">My Orders</a>
+        {%- endif -%}
+      </nav>
+    </div>
+    <a href="{{ routes.root_url }}" class="header__logo" aria-label="{{ shop.name }} home">
+      {%- if settings.logo != blank -%}
+        {{ settings.logo | image_url: width: 520 | image_tag: alt: shop.name, loading: 'eager', widths: '260, 520' }}
+      {%- else -%}
+        <img src="{{ 'zeyov-logo.png' | asset_url }}" alt="{{ shop.name }}" width="388" height="140" loading="eager">
+      {%- endif -%}
+    </a>
+    <div class="header__right">
+      <button class="icon-btn" data-open-search aria-label="Search">{% render 'icon', name: 'search' %}</button>
+      <a class="icon-btn hide-mobile" href="{{ routes.account_url }}" aria-label="Account">{% render 'icon', name: 'user' %}</a>
+      <a class="icon-btn" href="/pages/wishlist" aria-label="Favourites">{% render 'icon', name: 'heart' %}<span class="count-badge" data-wish-count></span></a>
+      <button class="icon-btn" data-open-cart aria-label="Open cart">{% render 'icon', name: 'cart' %}<span class="count-badge" data-cart-count data-count="{{ cart.item_count }}">{% if cart.item_count > 0 %}{{ cart.item_count }}{% endif %}</span></button>
+    </div>
+  </div>
+</header>
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [{ "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" }]
+}
+{% endschema %}

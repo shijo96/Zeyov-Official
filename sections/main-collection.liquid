@@ -1,0 +1,90 @@
+{%- paginate collection.products by section.settings.per_page -%}
+<div class="wrap" data-facet-root data-section-id="{{ section.id }}">
+  <div class="coll-hero">
+    {%- assign is_new = false -%}{%- if collection.handle == 'new-arrivals' or collection.handle == 'all' and collection.sort_by == 'created-descending' -%}{%- assign is_new = true -%}{%- endif -%}
+    <span class="eyebrow">{% if is_new %}Just dropped{% else %}Collection{% endif %}</span>
+    <h1>{% if is_new %}New Arrivals{% else %}{{ collection.title }}{% endif %}</h1>
+    {%- if collection.description != blank -%}<div class="muted rte" style="max-width:60ch">{{ collection.description }}</div>{%- endif -%}
+  </div>
+  {%- assign new_c = collections['new-arrivals'] -%}
+  {%- if new_c.products_count > 0 -%}{%- assign new_url = new_c.url -%}{%- else -%}{%- assign new_url = routes.all_products_collection_url | append: '?sort_by=created-descending' -%}{%- endif -%}
+  <nav class="pills" aria-label="Collections">
+    <a class="pill {% if collection.handle == 'all' and is_new == false %}is-active{% endif %}" href="{{ routes.all_products_collection_url }}">All Products</a>
+    <a class="pill {% if is_new %}is-active{% endif %}" href="{{ new_url }}">New Arrivals</a>
+    {%- assign menu = linklists[section.settings.pill_menu] -%}
+    {%- if menu.links.size > 0 -%}
+      {%- for link in menu.links -%}<a class="pill {% if link.active %}is-active{% endif %}" href="{{ link.url }}">{{ link.title }}</a>{%- endfor -%}
+    {%- else -%}
+      {%- for c in collections limit: 12 -%}
+        {%- if c.handle == 'all' or c.handle == 'frontpage' or c.handle == 'home' or c.handle == 'new-arrivals' or c.products_count == 0 -%}{%- continue -%}{%- endif -%}
+        <a class="pill {% if c.handle == collection.handle %}is-active{% endif %}" href="{{ c.url }}">{{ c.title }}</a>
+      {%- endfor -%}
+    {%- endif -%}
+  </nav>
+
+  {%- assign chip_list = section.settings.chips | split: ',' -%}
+  {%- capture chips_html -%}
+    {%- for c in chip_list -%}{%- assign t = c | strip -%}
+      {%- if collection.all_tags contains t -%}<a href="{{ collection.url }}/{{ t | handleize }}" class="{% if current_tags contains t %}is-active{% endif %}">{{ t }}</a>{%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if chips_html != blank -%}
+  <nav class="chiprow" aria-label="Styles"><a href="{{ collection.url }}" class="{% if current_tags == blank %}is-active{% endif %}">All styles</a>{{ chips_html }}</nav>
+  {%- endif -%}
+
+  {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+  {%- assign sort_opts = 'manual|Featured;best-selling|Best selling;created-descending|Newest first;price-ascending|Price: Low to High;price-descending|Price: High to Low;title-ascending|Name: A to Z;title-descending|Name: Z to A' | split: ';' -%}
+  {%- assign current_label = 'Featured' -%}
+  {%- for o in sort_opts -%}{%- assign kv = o | split: '|' -%}{%- if kv[0] == current_sort -%}{%- assign current_label = kv[1] -%}{%- endif -%}{%- endfor -%}
+  <div class="toolbar">
+    <span class="toolbar__count tabular" data-facet-count>{{ collection.products_count }} {% if collection.products_count == 1 %}product{% else %}products{% endif %}</span>
+    <div class="toolbar__actions">
+      <button type="button" class="toolbar__btn js-open-filters" data-open-filters>{% render 'icon', name: 'filter' %}Filter</button>
+      <div class="sortbox" data-sortbox>
+        <button type="button" class="toolbar__btn" data-sort-toggle aria-haspopup="listbox" aria-expanded="false">{% render 'icon', name: 'size' %}<span data-sort-label>{{ current_label }}</span>{% render 'icon', name: 'chev' %}</button>
+        <div class="sortmenu" role="listbox" aria-label="Sort by" data-sort-menu hidden>
+          <p class="sortmenu__title">Sort by</p>
+          {%- for o in sort_opts -%}{%- assign kv = o | split: '|' -%}
+            <button type="button" role="option" class="sortmenu__opt {% if kv[0] == current_sort %}is-active{% endif %}" aria-selected="{% if kv[0] == current_sort %}true{% else %}false{% endif %}" data-sort-value="{{ kv[0] }}">{{ kv[1] }}{% render 'icon', name: 'check' %}</button>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="coll-layout">
+    <div data-facet-filters>{% render 'facets', results: collection, url: collection.url, section_id: section.id %}</div>
+    <div class="results" data-facet-results>
+      {% render 'active-chips', results: collection, url: collection.url %}
+      {%- if collection.products.size > 0 -%}
+        <div class="grid">
+          {%- for product in collection.products -%}{% render 'product-card', product: product, collection: collection %}{%- endfor -%}
+        </div>
+        {%- if paginate.pages > 1 -%}
+          <nav class="pagination" aria-label="Pages">
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}<a href="{{ part.url }}" data-facet-link>{{ part.title }}</a>
+              {%- elsif part.title == paginate.current_page -%}<span class="current" aria-current="page">{{ part.title }}</span>
+              {%- else -%}<span>{{ part.title }}</span>{%- endif -%}
+            {%- endfor -%}
+          </nav>
+        {%- endif -%}
+      {%- elsif collection.all_products_count == 0 -%}
+        <div class="grid">{% render 'placeholder-cards', limit: 8 %}</div>
+      {%- else -%}
+        <div class="empty"><h2>No tees match these filters</h2><p class="muted">Try removing a colour or widening the price range.</p><a class="btn" href="{{ collection.url }}" data-facet-link>Clear filters</a></div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+{%- endpaginate -%}
+{% schema %}
+{
+  "name": "Collection grid",
+  "settings": [
+    { "type": "range", "id": "per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 24 },
+    { "type": "link_list", "id": "pill_menu", "label": "Collection pills menu (optional)" },
+    { "type": "text", "id": "chips", "label": "Style chips (product tags, comma separated)", "default": "Plain,Printed,Graphic,Pocket" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,7 @@
+<div class="wrap"><div class="page-narrow">
+  <a href="{{ routes.account_url }}" class="remove">← Back to account</a>
+  <h1>Order {{ order.name }}</h1>
+  <p class="muted">{{ order.created_at | date: '%d %b %Y' }} · {{ order.financial_status_label }} · {{ order.fulfillment_status_label }}</p>
+  {% for li in order.line_items %}<div class="line" style="grid-template-columns:1fr auto"><div><b>{{ li.title }}</b><div class="muted" style="font-size:13px">× {{ li.quantity }}</div></div><span>{{ li.final_line_price | money_without_trailing_zeros | replace: 'Rs. ', '₹' | replace: 'Rs.', '₹' }}</span></div>{% endfor %}
+  <div class="totals" style="margin-top:12px"><div><span>Subtotal</span><span>{{ order.line_items_subtotal_price | money_without_trailing_zeros | replace: 'Rs. ', '₹' | replace: 'Rs.', '₹' }}</span></div>{% for d in order.cart_level_discount_applications %}<div class="save"><span>{{ d.title }}</span><span>-{{ d.total_allocated_amount | money_without_trailing_zeros | replace: 'Rs. ', '₹' | replace: 'Rs.', '₹' }}</span></div>{% endfor %}<div><span>Shipping</span><span>{{ order.shipping_price | money_without_trailing_zeros | replace: 'Rs. ', '₹' | replace: 'Rs.', '₹' }}</span></div><div class="grand"><span>Total</span><span>{{ order.total_price | money_without_trailing_zeros | replace: 'Rs. ', '₹' | replace: 'Rs.', '₹' }}</span></div></div>
+</div></div>

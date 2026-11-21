@@ -1,0 +1,407 @@
+{%- comment -%}
+  Clothing-rack hero (premium). Garments hang on a rail; the hovered / centred
+  one opens up; clicking shows it large with Front / Back and colour tags.
+  Photo backgrounds are removed in the browser so the tees look like real cut-outs.
+{%- endcomment -%}
+{{ 'hero-rack.css' | asset_url | stylesheet_tag }}
+{%- assign hanger = '<svg viewBox="0 0 64 36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 14V10a5.5 5.5 0 1 0-5.5-5.5"/><path d="M32 14 3.5 32.5h57Z"/></svg>' -%}
+<section class="rack" data-rack id="rack-{{ section.id }}"
+  style="--rack-a: {{ section.settings.bg_top }}; --rack-b: {{ section.settings.bg_bottom }}; --rack-text: {{ section.settings.text }}; --rack-accent: {{ section.settings.accent }}; --strip-bg: {{ section.settings.strip_bg }}; --strip-fg: {{ section.settings.strip_fg }}; --rack-h: {{ section.settings.height }}vh;">
+  <h2 class="rack__sr">{{ section.settings.heading | default: shop.name }}</h2>
+
+  <div class="rack__stage" data-stage>
+    <div class="rack__top">
+      {%- if section.settings.eyebrow != blank -%}<span class="rack__eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <span class="rack__count" aria-hidden="true"><b data-count>01</b> / <span data-total>00</span></span>
+    </div>
+
+    <div class="rack__rail" aria-hidden="true"><i class="rack__bracket"></i><i class="rack__bar"></i><i class="rack__bracket"></i></div>
+
+    <div class="rack__viewport">
+      <button type="button" class="rack__arrow rack__arrow--prev" data-prev aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="rack__items" data-items role="list">
+        {%- liquid
+          assign n = 0
+          assign coll = section.settings.collection
+          assign use_coll = false
+          if section.settings.source != 'blocks' and coll != blank and coll.products_count > 0
+            assign use_coll = true
+          endif
+          assign max = section.settings.limit
+        -%}
+        {%- if use_coll -%}
+          {%- for p in coll.products limit: max -%}
+            {%- liquid
+              assign price = p.price | money_without_trailing_zeros | replace: 'Rs. ', '₹' | replace: 'Rs.', '₹'
+              if p.price_varies
+                assign price = price | prepend: 'from '
+              endif
+              assign back = blank
+              if p.images.size > 1
+                assign back = p.images[1]
+              endif
+              assign sub = p.type
+              assign variants = ''
+              for opt in p.options_with_values
+                assign on = opt.name | downcase
+                if on == 'color' or on == 'colour'
+                  assign sub = opt.values.size | append: ' colours'
+                  if opt.values.size == 1
+                    assign sub = opt.values.first
+                  endif
+                  capture variants
+                    echo '['
+                    for v in opt.values
+                      assign vimg = v.variant.featured_image | default: p.featured_image
+                      assign nj = v.name | json
+                      assign ij = vimg | image_url: width: 1000 | json
+                      echo '{"n":' | append: nj | append: ',"i":' | append: ij | append: '}'
+                      unless forloop.last
+                        echo ','
+                      endunless
+                    endfor
+                    echo ']'
+                  endcapture
+                endif
+              endfor
+            -%}
+            {%- render 'rack-item', product: p, idx: n, title: p.title, sub: sub, price: price, url: p.url, group: '', tag: '', front: p.featured_image, back: back, hanger: hanger, attrs: '', variants: variants -%}
+            {%- assign n = n | plus: 1 -%}
+          {%- endfor -%}
+        {%- endif -%}
+        {%- if use_coll == false or section.settings.top_up and n < section.settings.min_items -%}
+          {%- for block in section.blocks -%}
+            {%- if use_coll and n >= section.settings.min_items -%}{%- break -%}{%- endif -%}
+            {%- liquid
+              assign p = block.settings.product
+              assign title = block.settings.title
+              if title == blank and p != blank
+                assign title = p.title
+              endif
+              assign url = block.settings.link
+              if url == blank and p != blank
+                assign url = p.url
+              endif
+              if url == blank
+                assign url = routes.all_products_collection_url
+              endif
+              assign price = block.settings.price
+              if price == blank and p != blank
+                assign price = p.price | money_without_trailing_zeros | replace: 'Rs. ', '₹' | replace: 'Rs.', '₹' | prepend: 'from '
+              endif
+              assign front = block.settings.front
+              if front == blank and p != blank
+                assign front = p.featured_image
+              endif
+              assign back = block.settings.back
+              if back == blank and p != blank and p.images.size > 1
+                assign back = p.images[1]
+              endif
+            -%}
+            {%- render 'rack-item', product: block.settings.product, idx: n, title: title, sub: block.settings.subtitle, price: price, url: url, group: block.settings.group, tag: block.settings.tag_color, front: front, back: back, hanger: hanger, attrs: block.shopify_attributes, variants: '' -%}
+            {%- assign n = n | plus: 1 -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      <button type="button" class="rack__arrow rack__arrow--next" data-next aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <div class="rack__floor" aria-hidden="true"></div>
+
+    <div class="rack__info" data-info>
+      <p class="rack__name" data-name-out>{{ section.settings.hint }}</p>
+      <p class="rack__meta" data-meta>&nbsp;</p>
+      <div class="rack__actions">
+        <button type="button" class="rack__btn" data-view-open>{{ section.settings.cta_view }}</button>
+        <a class="rack__btn rack__btn--ghost" href="{{ section.settings.collection.url | default: routes.all_products_collection_url }}" data-pill>{{ section.settings.cta }}</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="rack__detail" data-detail hidden role="dialog" aria-modal="true" aria-labelledby="rack-title-{{ section.id }}">
+    <button type="button" class="rack__close" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="rack__show">
+      <figure class="rack__big">
+        <span class="rack__hanger rack__hanger--big" aria-hidden="true">{{ hanger }}</span>
+        <img data-big alt="" draggable="false">
+        <span class="rack__spot" aria-hidden="true"></span>
+      </figure>
+      <div class="rack__tags" data-tags></div>
+    </div>
+    <div class="rack__panel">
+      <span class="rack__eyebrow" data-d-sub></span>
+      <h3 class="rack__title" id="rack-title-{{ section.id }}" data-title></h3>
+      <p class="rack__price" data-d-price></p>
+      <div class="rack__chips" data-chips></div>
+      <div class="rack__toggle" role="tablist" aria-label="View">
+        <button type="button" role="tab" class="is-on" aria-selected="true" data-view="front">{{ section.settings.front_label }}</button>
+        <button type="button" role="tab" aria-selected="false" data-view="back">{{ section.settings.back_label }}</button>
+      </div>
+      <div class="rack__sizes" data-sizes hidden>
+        <span class="rack__label">Size</span>
+        <div class="rack__size-row" data-size-row></div>
+      </div>
+      <div class="rack__buy" data-buy hidden>
+        <button type="button" class="rack__btn rack__btn--ghost rack__cart" data-add>{{ section.settings.add_label }}</button>
+        <button type="button" class="rack__btn rack__now" data-now>{{ section.settings.buy_label }}</button>
+        <button type="button" class="rack__heart" data-wish="" aria-label="Save to wishlist" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 20s-7.5-4.4-7.5-10.1A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.6C19.5 15.6 12 20 12 20z"/></svg></button>
+      </div>
+      <p class="rack__msg" data-msg aria-live="polite"></p>
+      <a class="rack__link" href="#" data-link>{{ section.settings.cta }} <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+
+  {%- if section.settings.strip_text != blank -%}
+    {%- assign words = section.settings.strip_text | split: ',' -%}
+    <div class="rack__strip" aria-hidden="true">
+      <div class="rack__track">
+        {%- for n in (1..2) -%}
+          <span>{%- for k in (1..3) -%}{%- for w in words -%}<b>{{ w | strip }}</b><i>✦</i>{%- endfor -%}{%- endfor -%}</span>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+<script src="{{ 'hero-rack.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+ "name": "Clothing rack hero",
+ "tag": "div",
+ "class": "rack-section",
+ "max_blocks": 16,
+ "settings": [
+  {
+   "type": "paragraph",
+   "content": "Garments hang on a rail. Hover (or swipe on phones) to bring one forward; tap to see it large with Front / Back and colour tags. Use photos with a plain white background; it is removed automatically."
+  },
+  {
+   "type": "header",
+   "content": "What hangs on the rack"
+  },
+  {
+   "type": "select",
+   "id": "source",
+   "label": "Show",
+   "options": [
+    {
+     "value": "collection",
+     "label": "Products from a collection"
+    },
+    {
+     "value": "blocks",
+     "label": "Only the garments added below"
+    }
+   ],
+   "default": "collection"
+  },
+  {
+   "type": "collection",
+   "id": "collection",
+   "label": "Collection",
+   "info": "e.g. New Arrivals. Product photos with a plain white background look best."
+  },
+  {
+   "type": "range",
+   "id": "limit",
+   "label": "Products to show",
+   "min": 2,
+   "max": 16,
+   "step": 1,
+   "default": 12
+  },
+  {
+   "type": "checkbox",
+   "id": "top_up",
+   "label": "Fill the rack with the garments below when the collection is small",
+   "default": false
+  },
+  {
+   "type": "range",
+   "id": "min_items",
+   "label": "Fill up to",
+   "min": 4,
+   "max": 16,
+   "step": 1,
+   "default": 10
+  },
+  {
+   "type": "text",
+   "id": "heading",
+   "label": "Hidden heading (for SEO)",
+   "default": "Zeyov — premium oversized tees"
+  },
+  {
+   "type": "text",
+   "id": "eyebrow",
+   "label": "Small title",
+   "default": "The Zeyov Rack"
+  },
+  {
+   "type": "text",
+   "id": "hint",
+   "label": "Text before a garment is chosen",
+   "default": "Pick a piece off the rack"
+  },
+  {
+   "type": "text",
+   "id": "cta_view",
+   "label": "View button",
+   "default": "Take a closer look"
+  },
+  {
+   "type": "text",
+   "id": "cta",
+   "label": "Link button",
+   "default": "View details"
+  },
+  {
+   "type": "text",
+   "id": "add_label",
+   "label": "Add to cart button",
+   "default": "Add to cart"
+  },
+  {
+   "type": "text",
+   "id": "buy_label",
+   "label": "Buy now button",
+   "default": "Buy now"
+  },
+  {
+   "type": "text",
+   "id": "front_label",
+   "label": "Front label",
+   "default": "Front"
+  },
+  {
+   "type": "text",
+   "id": "back_label",
+   "label": "Back label",
+   "default": "Back"
+  },
+  {
+   "type": "range",
+   "id": "height",
+   "label": "Height (desktop)",
+   "min": 60,
+   "max": 100,
+   "step": 2,
+   "unit": "vh",
+   "default": 88
+  },
+  {
+   "type": "header",
+   "content": "Colours"
+  },
+  {
+   "type": "color",
+   "id": "bg_top",
+   "label": "Background (centre)",
+   "default": "#FFFDF9"
+  },
+  {
+   "type": "color",
+   "id": "bg_bottom",
+   "label": "Background (edges)",
+   "default": "#ECE4D7"
+  },
+  {
+   "type": "color",
+   "id": "text",
+   "label": "Text",
+   "default": "#1B1510"
+  },
+  {
+   "type": "color",
+   "id": "accent",
+   "label": "Accent",
+   "default": "#B98A3E"
+  },
+  {
+   "type": "header",
+   "content": "Bottom strip"
+  },
+  {
+   "type": "text",
+   "id": "strip_text",
+   "label": "Strip words",
+   "info": "Comma separated. Leave empty to hide the strip (hidden by default)."
+  },
+  {
+   "type": "color",
+   "id": "strip_bg",
+   "label": "Strip background",
+   "default": "#1B1510"
+  },
+  {
+   "type": "color",
+   "id": "strip_fg",
+   "label": "Strip text",
+   "default": "#D9B26F"
+  }
+ ],
+ "blocks": [
+  {
+   "type": "garment",
+   "name": "Garment",
+   "settings": [
+    {
+     "type": "text",
+     "id": "title",
+     "label": "Name",
+     "info": "Leave empty to use the product name"
+    },
+    {
+     "type": "text",
+     "id": "subtitle",
+     "label": "Colour",
+     "default": "Black"
+    },
+    {
+     "type": "text",
+     "id": "price",
+     "label": "Price text",
+     "info": "e.g. from ₹350. Leave empty to use the product price"
+    },
+    {
+     "type": "image_picker",
+     "id": "front",
+     "label": "Front photo",
+     "info": "Plain white background, portrait"
+    },
+    {
+     "type": "image_picker",
+     "id": "back",
+     "label": "Back photo"
+    },
+    {
+     "type": "product",
+     "id": "product",
+     "label": "Product (optional)"
+    },
+    {
+     "type": "url",
+     "id": "link",
+     "label": "Link"
+    },
+    {
+     "type": "text",
+     "id": "group",
+     "label": "Colour group",
+     "info": "Garments with the same group become colour options of each other (e.g. os250)"
+    },
+    {
+     "type": "color",
+     "id": "tag_color",
+     "label": "Colour swatch",
+     "default": "#1B1510"
+    }
+   ]
+  }
+ ],
+ "presets": [
+  {
+   "name": "Clothing rack hero"
+  }
+ ]
+}
+{% endschema %}

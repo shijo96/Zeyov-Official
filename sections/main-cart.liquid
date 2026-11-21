@@ -1,0 +1,31 @@
+<div class="wrap">
+  <div class="coll-hero"><span class="eyebrow">Your bag</span><h1>Shopping bag</h1></div>
+  <div class="cart-page" data-cart-page>
+    <div data-cart-body>
+      {%- if cart.item_count == 0 -%}
+        <div class="cart-empty"><h2>Your bag is empty</h2><p class="muted">Pick any 3 tees and save 5%.</p><a class="btn" href="{{ routes.all_products_collection_url }}">Shop tees</a></div>
+      {%- else -%}
+        <form action="{{ routes.cart_url }}" method="post" id="CartFormFallback">
+          {%- for item in cart.items -%}
+            <div class="line">
+              <a class="line__img" href="{{ item.url }}">{{ item.image | image_url: width: 240 | image_tag: alt: item.product.title }}</a>
+              <div class="line__body">
+                <div class="line__top"><a class="line__title" href="{{ item.url }}">{{ item.product.title }}</a><b>{{ item.final_line_price | money_without_trailing_zeros | replace: 'Rs. ', '₹' | replace: 'Rs.', '₹' }}</b></div>
+                {%- unless item.product.has_only_default_variant -%}<span class="line__variant">{{ item.variant.title }}</span>{%- endunless -%}
+                <label>Qty <input class="input" style="width:80px;height:36px" type="number" name="updates[]" value="{{ item.quantity }}" min="0"></label>
+              </div>
+            </div>
+          {%- endfor -%}
+          <button class="btn btn--ghost" type="submit" name="update">Update</button>
+        </form>
+      {%- endif -%}
+    </div>
+    <aside data-cart-foot {% if cart.item_count == 0 %}hidden{% endif %}>
+      <div class="totals"><div class="grand"><span>Total</span><span>{{ cart.total_price | money_without_trailing_zeros | replace: 'Rs. ', '₹' | replace: 'Rs.', '₹' }}</span></div></div>
+      <form action="{{ routes.cart_url }}" method="post"><button class="btn btn--block" name="checkout">Checkout</button></form>
+    </aside>
+  </div>
+</div>
+{% schema %}
+{ "name": "Cart" }
+{% endschema %}

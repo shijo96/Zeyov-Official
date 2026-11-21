@@ -1,0 +1,43 @@
+<section class="hero2 wrap" data-hero>
+  <div class="hero2__track" data-hero-track>
+    {%- for block in section.blocks -%}
+      <div class="hero2__slide" {{ block.shopify_attributes }}>
+        <div class="hero2__copy">
+          <h1>{{ block.settings.heading | newline_to_br }}</h1>
+          <p>{{ block.settings.text }}</p>
+          <a href="{{ block.settings.link | default: routes.collections_url }}" class="btn">{{ block.settings.cta }} {% render 'icon', name: 'arrow' %}</a>
+        </div>
+        <div class="hero2__img">
+          {%- if block.settings.image != blank -%}
+            {%- if forloop.first -%}
+              {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', preload: true, widths: '400, 700, 1000, 1200', sizes: '(min-width: 990px) 50vw, 50vw', alt: block.settings.heading }}
+            {%- else -%}
+              {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', decoding: 'async', widths: '400, 700, 1000, 1200', sizes: '(min-width: 990px) 50vw, 50vw', alt: block.settings.heading }}
+            {%- endif -%}
+          {%- else -%}
+            <img src="{{ block.settings.fallback | append: '.webp' | asset_url }}" alt="" width="600" height="800" {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %}>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+  {%- if section.blocks.size > 1 -%}<div class="hero2__dots" data-hero-dots>{%- for b in section.blocks -%}<i class="{% if forloop.first %}is-active{% endif %}"></i>{%- endfor -%}</div>{%- endif -%}
+</section>
+{% schema %}
+{
+  "name": "Hero slideshow",
+  "max_blocks": 5,
+  "settings": [{ "type": "range", "id": "autoplay", "label": "Auto-rotate (seconds, 0 = off)", "min": 0, "max": 10, "step": 1, "default": 5 }],
+  "blocks": [{ "type": "slide", "name": "Slide", "settings": [
+    { "type": "image_picker", "id": "image", "label": "Model photo" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Premium\nT-Shirt\nCollection" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Style for a Brighter You" },
+    { "type": "text", "id": "cta", "label": "Button", "default": "Shop Now" },
+    { "type": "url", "id": "link", "label": "Link" },
+    { "type": "select", "id": "fallback", "label": "Placeholder photo", "default": "z-hero-model", "options": [
+      { "value": "z-hero-model", "label": "Model – black tee" }, { "value": "z-p-premium", "label": "Model – beige tee" }, { "value": "z-p-maroon", "label": "Model – maroon tee" }, { "value": "z-pdp-black", "label": "Model – close up" }
+    ] }
+  ] }],
+  "presets": [{ "name": "Hero slideshow", "blocks": [{ "type": "slide" }] }]
+}
+{% endschema %}

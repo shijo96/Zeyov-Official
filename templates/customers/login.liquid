@@ -1,0 +1,24 @@
+<div class="wrap">
+  <div class="form" id="Login">
+    <h1>Welcome back</h1>
+    {% form 'customer_login' %}
+      {{ form.errors | default_errors }}
+      <label class="form-row" for="LoginEmail">Email<input class="input" id="LoginEmail" type="email" name="customer[email]" autocomplete="email" required></label>
+      <label class="form-row" for="LoginPassword">Password<input class="input" id="LoginPassword" type="password" name="customer[password]" autocomplete="current-password" required></label>
+      <button class="btn btn--block" style="margin-top:6px">Sign in</button>
+      <p class="muted" style="text-align:center;font-size:14px;margin-top:12px"><a href="#Recover" onclick="document.getElementById('Recover').hidden=false">Forgot password?</a> · <a href="{{ routes.account_register_url }}">Create account</a></p>
+    {% endform %}
+  </div>
+  <div class="form" id="Recover" hidden>
+    <h2 style="text-align:center">Reset password</h2>
+    {% form 'recover_customer_password' %}
+      {% if form.posted_successfully? %}<p class="notice">We've emailed you a reset link.</p>{% endif %}
+      {{ form.errors | default_errors }}
+      <input class="input" type="email" name="email" placeholder="Email" required>
+      <button class="btn btn--block" style="margin-top:10px">Send link</button>
+    {% endform %}
+  </div>
+  {% if shop.checkout.guest_login %}
+    <div class="form">{% form 'guest_login' %}<button class="btn btn--ghost btn--block">Continue as guest</button>{% endform %}</div>
+  {% endif %}
+</div>

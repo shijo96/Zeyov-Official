@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="{{ settings.color_bg }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ settings.favicon | image_url: width: 96, height: 96 }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+  {%- else -%}
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ 'favicon-32.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ 'favicon-96.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ 'icon-192.png' | asset_url }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ 'apple-touch-icon.png' | asset_url }}">
+  {%- endif -%}
+  <title>{{ page_title }}{% if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}</title>
+  {%- if page_description -%}<meta name="description" content="{{ page_description | escape }}">{%- endif -%}
+  {% render 'meta-tags' %}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600;700&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+
+  <style>
+    :root {
+      --bg: {{ settings.color_bg }};
+      --surface: {{ settings.color_surface }};
+      --text: {{ settings.color_text }};
+      --muted: {{ settings.color_muted }};
+      --gold: {{ settings.color_gold }};
+      --sale: {{ settings.color_sale }};
+      --line: {{ settings.color_line }};
+      --logo-w: {{ settings.logo_width }}px;
+    }
+  </style>
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+
+  <script>
+    window.Zeyov = {
+      moneyFormat: {{ shop.money_format | json }},
+      routes: {
+        root: {{ routes.root_url | json }},
+        cartAdd: {{ routes.cart_add_url | json }},
+        cartChange: {{ routes.cart_change_url | json }},
+        cart: {{ routes.cart_url | json }},
+        search: {{ routes.search_url | json }},
+        predictive: {{ routes.predictive_search_url | json }}
+      },
+      offers: {
+        tier1Qty: {{ settings.tier1_qty | default: 3 }}, tier1Pct: {{ settings.tier1_pct | default: 3 }},
+        tier2Qty: {{ settings.tier2_qty | default: 5 }}, tier2Pct: {{ settings.tier2_pct | default: 5 }},
+        bundle2Pct: {{ settings.bundle2_pct | default: 5 }}, bundle3Pct: {{ settings.bundle3_pct | default: 10 }}, codFee: {{ settings.cod_fee | default: 80 }}
+      },
+      showEstimate: {{ settings.show_estimate | json }},
+      swatches: {{ settings.swatch_colors | newline_to_br | strip_newlines | split: '<br />' | json }}
+    };
+  </script>
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+  <script type="speculationrules">{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/cart*","/checkout*","/account*","/*?*"]}}]},"eagerness":"moderate"}]}</script>
+  {{ content_for_header }}
+</head>
+<body class="template-{{ template.name }}">
+  <a class="skip-link" href="#MainContent">Skip to content</a>
+  {% render 'announcement' %}
+  {% section 'header' %}
+
+  <main id="MainContent" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  {% section 'perk-bar' %}
+  {% section 'footer' %}
+
+  {% render 'cart-drawer' %}
+  {% render 'search-overlay' %}
+  {% render 'menu-drawer' %}
+  {% render 'mobile-tabbar' %}
+  <div class="toast" id="Toast" role="status" aria-live="polite"></div>
+  <div class="scrim" id="Scrim" hidden></div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <img src="{{ 'zeyov-logo.png' | asset_url }}" alt="{{ shop.name }}" width="388" height="140" loading="lazy" class="footer__logo">
+        <p>{{ section.settings.about }}</p>
+        {% render 'socials' %}
+      </div>
+      <div>
+        <h3>Shop</h3>
+        <ul>
+          <li><a href="{{ routes.all_products_collection_url }}">Shop All</a></li>
+          <li><a href="{{ routes.all_products_collection_url }}?sort_by=created-descending">New Arrivals</a></li>
+          <li><a href="{{ routes.collections_url }}">Collections</a></li>
+          <li><a href="/pages/studio">Zeyov Studio</a></li>
+          <li><a href="/pages/wishlist">Wishlist</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Help &amp; Policies</h3>
+        <ul>
+          {%- assign fm = linklists[section.settings.menu] -%}
+          {%- if fm.links.size > 0 -%}
+            {%- for link in fm.links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}
+          {%- else -%}
+            <li><a href="/pages/about-us">About Us</a></li><li><a href="/pages/contact">Contact Us</a></li><li><a href="/pages/track-order">Track Order</a></li><li><a href="/pages/faq">FAQ</a></li>
+            <li><a href="/pages/shipping-policy">Shipping &amp; Delivery</a></li><li><a href="/pages/replacement-policy">Returns &amp; Refunds</a></li>
+            <li><a href="/pages/privacy-policy">Privacy Policy</a></li><li><a href="/pages/terms-and-conditions">Terms &amp; Conditions</a></li>
+          {%- endif -%}
+        </ul>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <ul class="footer__contact">
+          {%- if settings.contact_email != blank -%}<li><a href="mailto:{{ settings.contact_email }}">{% render 'icon', name: 'mail' %}{{ settings.contact_email }}</a></li>{%- endif -%}
+          {%- if settings.contact_phone != blank -%}<li><a href="tel:{{ settings.contact_phone | remove: ' ' }}">{% render 'icon', name: 'phone' %}{{ settings.contact_phone }}</a></li>{%- endif -%}
+          {%- if settings.whatsapp_number != blank -%}<li><a href="https://wa.me/{{ settings.whatsapp_number }}" target="_blank" rel="noopener">{% render 'icon', name: 'whatsapp' %}Chat on WhatsApp</a></li>{%- endif -%}
+          {%- if settings.contact_hours != blank -%}<li>{% render 'icon', name: 'clock' %}{{ settings.contact_hours }}</li>{%- endif -%}
+          {%- if settings.contact_city != blank -%}<li>{% render 'icon', name: 'pin' %}{{ settings.contact_city }}</li>{%- endif -%}
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</span>
+      <span class="footer__pay">UPI · Visa · Mastercard · RuPay · COD</span>
+    </div>
+  </div>
+</footer>
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "textarea", "id": "about", "label": "About text", "default": "Own-brand premium T-shirts from Ernakulam, Kerala. Oversized and regular fits in 190 to 250 GSM cotton. Style for a brighter you." },
+    { "type": "link_list", "id": "menu", "label": "Help & policies menu", "default": "footer" }
+  ]
+}
+{% endschema %}

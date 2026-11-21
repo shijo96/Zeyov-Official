@@ -1,0 +1,16 @@
+<div class="wrap"><div class="page-narrow">
+  <a href="{{ routes.account_url }}" class="remove">← Back to account</a>
+  <h1>Addresses</h1>
+  {% paginate customer.addresses by 10 %}{% for address in customer.addresses %}<div class="line" style="grid-template-columns:1fr">{{ address | format_address }}</div>{% endfor %}{% endpaginate %}
+  <h2 style="font-size:22px">Add address</h2>
+  {% form 'customer_address', customer.new_address %}
+    <div style="display:grid;gap:10px">
+      <input class="input" name="address[first_name]" placeholder="First name"><input class="input" name="address[last_name]" placeholder="Last name">
+      <input class="input" name="address[address1]" placeholder="Address"><input class="input" name="address[city]" placeholder="City">
+      <input class="input" name="address[zip]" placeholder="PIN code"><input class="input" name="address[phone]" placeholder="Phone">
+      <select class="input" name="address[country]">{{ all_country_option_tags }}</select>
+      <input class="input" name="address[province]" placeholder="State">
+      <button class="btn">Save address</button>
+    </div>
+  {% endform %}
+</div></div>

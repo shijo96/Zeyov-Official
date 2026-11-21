@@ -1,0 +1,11 @@
+<div class="wrap"><div class="form">
+  <h1>Create account</h1>
+  {% form 'create_customer' %}
+    {{ form.errors | default_errors }}
+    <label class="form-row" for="RegFirst">First name<input class="input" id="RegFirst" name="customer[first_name]" autocomplete="given-name"></label>
+    <label class="form-row" for="RegLast">Last name<input class="input" id="RegLast" name="customer[last_name]" autocomplete="family-name"></label>
+    <label class="form-row" for="RegEmail">Email<input class="input" id="RegEmail" type="email" name="customer[email]" required autocomplete="email"></label>
+    <label class="form-row" for="RegPass">Password<input class="input" id="RegPass" type="password" name="customer[password]" required autocomplete="new-password"></label>
+    <button class="btn btn--block" style="margin-top:6px">Create account</button>
+  {% endform %}
+</div></div>
