@@ -64,6 +64,22 @@
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
   <script type="speculationrules">{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/cart*","/checkout*","/account*","/*?*"]}}]},"eagerness":"moderate"}]}</script>
   {{ content_for_header }}
+  {%- if template.name == 'index' -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": {{ shop.name | json }},
+        "url": {{ request.origin | json }},
+        "logo": {{ 'zeyov-logo.png' | asset_url | prepend: 'https:' | json }},
+        "sameAs": [
+          {%- assign socials = settings.social_facebook | append: '|' | append: settings.social_instagram | append: '|' | append: settings.social_youtube | append: '|' | append: settings.social_pinterest | split: '|' -%}
+          {%- assign first = true -%}
+          {%- for s in socials -%}{%- if s != blank -%}{%- unless first -%},{%- endunless -%}{{ s | json }}{%- assign first = false -%}{%- endif -%}{%- endfor -%}
+        ]
+      }
+    </script>
+  {%- endif -%}
 </head>
 <body class="template-{{ template.name }}">
   <a class="skip-link" href="#MainContent">Skip to content</a>

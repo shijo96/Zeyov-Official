@@ -1,6 +1,10 @@
 {
   "current": "Default",
   "presets": {
-    "Default": {}
+    "Default": {
+      "social_facebook": "https://www.facebook.com/share/1F74qBdC3A/",
+      "social_instagram": "https://www.instagram.com/zeyov.official/",
+      "social_youtube": "https://www.youtube.com/@zeyovofficial"
+    }
   }
 }
