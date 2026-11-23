@@ -175,3 +175,12 @@
 
 .zs-qrows .zs-qeta { display: block; padding: 8px 10px; border-radius: 10px; border: 1px dashed rgba(240,212,154,.35); font-size: 12.5px; color: #E6D2AE; text-align: center; }
 .zs-qeta b { color: #F0D49A; }
+
+.zs-policy { display: grid; gap: 8px; padding: 14px; border-radius: 14px; background: rgba(240,212,154,.08); border: 1px solid rgba(240,212,154,.28); color: #E6D2AE; font-size: 12.5px; line-height: 1.5; }
+.zs-policy b { color: #F0D49A; font-size: 13px; letter-spacing: .02em; }
+.zs-policy p { margin: 0; }
+.zs-policy strong { color: #fff; }
+.zs-policy a { color: #F0D49A; text-decoration: underline; text-underline-offset: 2px; }
+.zs-agree { display: flex; gap: 10px; align-items: flex-start; padding-top: 6px; border-top: 1px dashed rgba(240,212,154,.25); color: #fff; font-weight: 600; cursor: pointer; }
+.zs-agree input { width: 18px; height: 18px; margin: 1px 0 0; flex: none; accent-color: #D9B26F; }
+.zs-link { padding: 0; border: 0; background: none; color: #F0D49A; font: inherit; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }

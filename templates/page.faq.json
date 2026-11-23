@@ -64,7 +64,7 @@
      "settings": {
       "category": "Returns & refunds",
       "question": "What is your return policy?",
-      "answer": "<p>You can return or exchange within <b>7 days of delivery</b>. The tee must be unworn, unwashed and in its original packaging, with the <b>Zeyov tag still attached and its seal unbroken</b>.</p>"
+      "answer": "<p>You can return or exchange any tee from our collection within <b>7 days of delivery</b>. The tee must be unworn, unwashed and in its original packaging, with the <b>Zeyov tag still attached and its seal unbroken</b>. Custom tees designed in Zeyov Studio can't be returned.</p>"
      }
     },
     "q09": {
@@ -151,8 +151,8 @@
      "type": "question",
      "settings": {
       "category": "Zeyov Studio",
-      "question": "Can I return a custom Studio tee?",
-      "answer": "<p>Because Studio tees are made only for you, they can't be returned for change of mind. If one arrives damaged or misprinted, we'll replace it free of charge.</p>"
+      "question": "Can I return or exchange a custom Studio tee?",
+      "answer": "<p>No. Tees you design in Zeyov Studio are made only for you, so they <b>can't be returned, refunded or exchanged</b>, including for size. Please check the size chart and your design before ordering. If one arrives damaged, defective or doesn't match the design you approved, we'll remake it free.</p>"
      }
     },
     "q20": {

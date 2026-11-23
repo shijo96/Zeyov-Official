@@ -467,9 +467,10 @@
         <div class="zs-seg2"><button type="button" data-ptype="${side}|DTF" class="${st.print[side] === 'DTF' ? 'is-on' : ''}">DTF print</button><button type="button" data-ptype="${side}|Embroidery" class="${st.print[side] === 'Embroidery' ? 'is-on' : ''}">Embroidery</button></div>
         ${pc.over ? '<p class="zs-note bad">Embroidery is max 10 × 10 in. Make the design smaller or choose DTF.</p>' : '<p class="zs-note">Embroidery: max 10 × 10 in per design.</p>'}</div>`;
     }).join('') || '<p class="muted zs-empty">Add a design to choose DTF print or embroidery.</p>';
-    const ok = !!SO && q > 0 && st.layers.length > 0 && !['front', 'back'].some((s) => (printClass(s) || {}).over);
+    const agreed = !!($('[data-agree]') || {}).checked;
+    const ok = !!SO && q > 0 && st.layers.length > 0 && agreed && !['front', 'back'].some((s) => (printClass(s) || {}).over);
     $('[data-add]').disabled = !ok;
-    $('[data-add-hint]').textContent = !SO ? 'Online ordering for Studio is paused for a moment. Please try again shortly or contact us on WhatsApp.' : !st.layers.length ? 'Add an image or text to your tee first.' : !q ? 'Choose at least 1 piece.' : '';
+    $('[data-add-hint]').textContent = !SO ? 'Online ordering for Studio is paused for a moment. Please try again shortly or contact us on WhatsApp.' : !st.layers.length ? 'Add an image or text to your tee first.' : !q ? 'Choose at least 1 piece.' : !agreed ? 'Please tick the box above to confirm you understand custom tees can’t be returned.' : '';
     $$('[data-qty-size]').forEach((i) => { if (document.activeElement !== i) i.value = st.qty[i.dataset.qtySize]; i.closest('.zs-size').classList.toggle('is-on', st.qty[i.dataset.qtySize] > 0); });
   }
 
@@ -503,6 +504,7 @@
     const t = e.target;
     if (t.matches('[data-file]')) { addImage(t.files[0]); t.value = ''; }
     else if (t.matches('[data-area-toggle]')) { st.showArea = t.checked; placeArea(); }
+    else if (t.matches('[data-agree]')) { renderQuote(); }
     else if (t.matches('[data-qty-size]')) { st.qty[t.dataset.qtySize] = Math.max(0, parseInt(t.value, 10) || 0); renderQuote(); }
   });
   // drag & drop upload
@@ -576,7 +578,7 @@
     try {
       const v = await resolveVariant();
       const id = 'ZS-' + Date.now().toString(36).toUpperCase().slice(-6);
-      const props = { Size: sizes[0], Colour: st.color, 'Design ID': id, 'Sizes in this design': sizes.map((s) => `${s}×${st.qty[s]}`).join(', '), Delivery: isEmb() ? 'About 2 weeks (embroidery)' : '7–8 days' };
+      const props = { Size: sizes[0], Colour: st.color, 'Design ID': id, 'Sizes in this design': sizes.map((s) => `${s}×${st.qty[s]}`).join(', '), Delivery: isEmb() ? 'About 2 weeks (embroidery)' : '7–8 days', Returns: 'Custom-made: no returns, refunds or exchanges' };
       const files = {};
       for (const side of ['front', 'back']) {
         const sum = sideSummary(side); const S = side === 'front' ? 'Front' : 'Back';
