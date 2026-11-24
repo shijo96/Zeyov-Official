@@ -32,15 +32,15 @@
      "settings": {
       "category": "Orders & payment",
       "question": "Can I cancel my order?",
-      "answer": "<p>Yes, until your order goes into printing. Contact us as soon as possible with your order number. Once printing has started, the order can't be cancelled, but our <a href=\"/pages/replacement-policy\">returns policy</a> applies after delivery.</p>"
+      "answer": "<p>Yes, until your order is dispatched. Contact us as soon as possible with your order number. Once dispatched, the order can't be cancelled, but our <a href=\"/policies/refund-policy\">7-day size exchange</a> applies after delivery.</p>"
      }
     },
     "q05": {
      "type": "question",
      "settings": {
       "category": "Printing & delivery",
-      "question": "Why does delivery take a few days?",
-      "answer": "<p>Every Zeyov tee is <b>printed to order</b> for you. Printing takes 24–48 hours, we dispatch from day 2, and your order reaches you in about <b>7–8 days</b> from the day you order. Embroidery designs take about 2 weeks.</p>"
+      "question": "How long does delivery take?",
+      "answer": "<p>In-stock tees are packed and dispatched within <b>1–2 days</b>, then delivered in <b>3–7 days</b> depending on your pin code. Made-to-order or pre-booked embroidery designs take about 2 weeks; we confirm the dispatch date on WhatsApp.</p>"
      }
     },
     "q06": {
@@ -63,8 +63,8 @@
      "type": "question",
      "settings": {
       "category": "Returns & refunds",
-      "question": "What is your return policy?",
-      "answer": "<p>You can return or exchange any tee from our collection within <b>7 days of delivery</b>. The tee must be unworn, unwashed and in its original packaging, with the <b>Zeyov tag still attached and its seal unbroken</b>. Custom tees designed in Zeyov Studio can't be returned.</p>"
+      "question": "What is your exchange policy?",
+      "answer": "<p>We offer a <b>7-day size exchange</b>: if your tee doesn't fit, request a different size within 7 days of delivery. The tee must be unworn, unwashed and in its original packaging, with the <b>Zeyov tag still attached</b>. Damaged or wrong items are replaced free. Custom tees designed in Zeyov Studio can't be exchanged for size.</p>"
      }
     },
     "q09": {
@@ -72,15 +72,15 @@
      "settings": {
       "category": "Returns & refunds",
       "question": "Why does the tag matter?",
-      "answer": "<p>The Zeyov tag is our proof that a tee hasn't been worn or washed. Please try your tee on <b>with the tag still on</b>. If the tag has been removed, cut or its seal broken, we can't accept a return or issue a refund.</p>"
+      "answer": "<p>The Zeyov tag is our proof that a tee hasn't been worn or washed. Please try your tee on <b>with the tag still on</b>. If the tag has been removed, cut or its seal broken, we can't accept an exchange.</p>"
      }
     },
     "q10": {
      "type": "question",
      "settings": {
       "category": "Returns & refunds",
-      "question": "When will I get my refund?",
-      "answer": "<p>Once your return reaches us, we inspect it. If it passes the check, the refund is issued within <b>7 working days</b> to your original payment method (bank account or UPI for Cash on Delivery orders). The ₹80 COD charge is non-refundable.</p>"
+      "question": "Do you give refunds?",
+      "answer": "<p>Refunds apply only when a replacement isn't possible or an order is cancelled before dispatch. Approved refunds are issued within <b>5–7 business days</b> to your original payment method (bank account or UPI for Cash on Delivery orders). The ₹80 COD charge is non-refundable.</p>"
      }
     },
     "q11": {
@@ -168,7 +168,7 @@
      "settings": {
       "category": "Printing & delivery",
       "question": "How long do embroidery designs take?",
-      "answer": "<p>Embroidered tees are stitched to order, so they take a little longer: about <b>2 weeks</b> from your order to delivery. Printed tees arrive in 7–8 days. If your order has both, we ship everything together when the embroidery is ready.</p>"
+      "answer": "<p>In-stock embroidered tees ship like any other tee: dispatched in 1–2 days and delivered in 3–7 days. If a design is made to order or pre-booked, it takes about <b>2 weeks</b>, and we ship everything together when it's ready.</p>"
      }
     }
    },

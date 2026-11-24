@@ -150,7 +150,7 @@
       {%- liquid
         assign emb_check = product.title | append: ' ' | append: product.type | append: ' ' | append: product.tags | downcase
         assign is_emb = false
-        if emb_check contains 'embroider'
+        if emb_check contains 'embroider' and product.available == false
           assign is_emb = true
         endif
         assign eta_a = section.settings.eta_min
@@ -167,7 +167,7 @@
           {%- if is_emb -%}
             <span class="muted">Embroidered to order by hand, delivered in about 2 weeks across India.</span>
           {%- else -%}
-            <span class="muted">Printed to order in 24–48 hrs, then shipped across India.</span>
+            <span class="muted">In stock · dispatched within 1–2 days, delivered across India.</span>
           {%- endif -%}
         </div>
       </div>
@@ -177,7 +177,8 @@
       <div class="perks">
         <div>{% render 'icon', name: 'truck' %}Free delivery (online pay)</div>
         <div>{% render 'icon', name: 'cod' %}COD +₹{{ settings.cod_fee | default: 80 }}</div>
-        <div>{% render 'icon', name: 'return' %}7-day easy returns</div>
+        <div>{% render 'icon', name: 'return' %}7-day size exchange</div>
+        <div>{% render 'icon', name: 'shield' %}Secure UPI payment</div>
       </div>
 
       <div class="acc">
@@ -191,13 +192,14 @@
             {%- if is_emb -%}
               <li><b>Embroidered to order</b> — embroidery designs take about 2 weeks from order to delivery.</li>
             {%- else -%}
-              <li><b>Printed to order</b> in 24–48 hours, dispatched from day 2.</li>
+              <li><b>Dispatched within 1–2 days</b> of your order.</li>
               <li><b>Delivered in {{ section.settings.eta_min }}–{{ section.settings.eta_max }} days</b> from your order across India.</li>
             {%- endif -%}
             <li><b>Free delivery</b> on online payment · Cash on delivery ₹{{ settings.cod_fee | default: 80 }} extra.</li>
-            <li><b>7-day returns:</b> return or exchange within 7 days of delivery, unworn, unwashed and with the Zeyov tag attached and unbroken.</li>
+            <li><b>7-day size exchange:</b> swap for another size within 7 days of delivery. The tee must be unworn, unwashed and with the Zeyov tag attached.</li>
+            <li><b>Damaged or wrong item?</b> Tell us within 7 days of delivery and we will replace it free.</li>
           </ul>
-          <p><a href="/pages/replacement-policy">Read the full returns policy</a> · <a href="/pages/faq">FAQ</a></p>
+          <p><a href="/policies/refund-policy">Read the full exchange policy</a> · <a href="/pages/faq">FAQ</a></p>
         </div></details>
       </div>
       {%- for block in section.blocks -%}{%- case block.type -%}{%- when '@app' -%}{% render block %}{%- endcase -%}{%- endfor -%}

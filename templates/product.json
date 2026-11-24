@@ -3,8 +3,8 @@
   "main": {
    "type": "main-product",
    "settings": {
-    "eta_min": 7,
-    "eta_max": 8,
+    "eta_min": 4,
+    "eta_max": 9,
     "prebook": true,
     "advance_product": "pre-booking-advance",
     "emb_days": 14
