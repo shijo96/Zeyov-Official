@@ -226,7 +226,7 @@
     rows += `<div class="grand"><span>Total</span><span>${money(cart.total_price)}</span></div>`;
     const foot = `<div class="totals">${rows}</div>
       <form action="${url('cart')}" method="post"><button class="btn btn--block" name="checkout" type="submit">Checkout · ${money(cart.total_price)} <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:18px;height:18px"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></form>
-      <p class="muted" style="font-size:11.5px;text-align:center;margin-top:8px">Free delivery on online payment · COD +₹${O.codFee || 80}</p>`;
+      <p class="muted" style="font-size:11.5px;text-align:center;margin-top:8px">${O.codFee > 0 ? `Free delivery on online payment · COD +₹${O.codFee}` : 'Free delivery on all orders · Cash on Delivery available'}</p>`;
     foots.forEach((f) => { f.innerHTML = foot; f.hidden = false; });
     loadUpsell(cart);
   }

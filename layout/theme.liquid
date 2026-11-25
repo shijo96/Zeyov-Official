@@ -54,7 +54,7 @@
       offers: {
         tier1Qty: {{ settings.tier1_qty | default: 3 }}, tier1Pct: {{ settings.tier1_pct | default: 3 }},
         tier2Qty: {{ settings.tier2_qty | default: 5 }}, tier2Pct: {{ settings.tier2_pct | default: 5 }},
-        bundle2Pct: {{ settings.bundle2_pct | default: 5 }}, bundle3Pct: {{ settings.bundle3_pct | default: 10 }}, codFee: {{ settings.cod_fee | default: 80 }}
+        bundle2Pct: {{ settings.bundle2_pct | default: 5 }}, bundle3Pct: {{ settings.bundle3_pct | default: 10 }}, codFee: {{ settings.cod_fee | default: 0 }}
       },
       showEstimate: {{ settings.show_estimate | json }},
       swatches: {{ settings.swatch_colors | newline_to_br | strip_newlines | split: '<br />' | json }}

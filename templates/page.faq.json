@@ -16,7 +16,7 @@
      "settings": {
       "category": "Orders & payment",
       "question": "Which payment methods do you accept?",
-      "answer": "<p>UPI, debit and credit cards, net banking and wallets through Razorpay, plus Cash on Delivery. Delivery is <b>free on every online payment</b>; Cash on Delivery has a ₹80 handling charge.</p>"
+      "answer": "<p>UPI, debit and credit cards, net banking and wallets through Razorpay, plus Cash on Delivery. Delivery is <b>free on every order</b>, including Cash on Delivery — no extra charge.</p>"
      }
     },
     "q03": {
@@ -80,7 +80,7 @@
      "settings": {
       "category": "Returns & refunds",
       "question": "Do you give refunds?",
-      "answer": "<p>Refunds apply only when a replacement isn't possible or an order is cancelled before dispatch. Approved refunds are issued within <b>5–7 business days</b> to your original payment method (bank account or UPI for Cash on Delivery orders). The ₹80 COD charge is non-refundable.</p>"
+      "answer": "<p>Refunds apply only when a replacement isn't possible or an order is cancelled before dispatch. Approved refunds are issued within <b>5–7 business days</b> to your original payment method (bank account or UPI for Cash on Delivery orders).</p>"
      }
     },
     "q11": {

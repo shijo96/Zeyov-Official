@@ -168,13 +168,14 @@
         "type": "text",
         "id": "free_shipping_text",
         "label": "Shipping note",
-        "default": "Free delivery on online payment · COD +₹80"
+        "default": "Free delivery on all orders · Cash on Delivery available"
       },
       {
         "type": "number",
         "id": "cod_fee",
         "label": "COD charge shown in store (₹)",
-        "default": 80
+        "info": "0 = free Cash on Delivery. Keep it the same as the Cash on Delivery rate in Settings → Shipping and delivery.",
+        "default": 0
       },
       {
         "type": "product",

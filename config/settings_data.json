@@ -4,7 +4,9 @@
     "Default": {
       "social_facebook": "https://www.facebook.com/share/1F74qBdC3A/",
       "social_instagram": "https://www.instagram.com/zeyov.official/",
-      "social_youtube": "https://www.youtube.com/@zeyovofficial"
+      "social_youtube": "https://www.youtube.com/@zeyovofficial",
+      "cod_fee": 0,
+      "free_shipping_text": "Free delivery on all orders \u00b7 Cash on Delivery available"
     }
   }
 }

@@ -176,7 +176,7 @@
 
       <div class="perks">
         <div>{% render 'icon', name: 'truck' %}Free delivery (online pay)</div>
-        <div>{% render 'icon', name: 'cod' %}COD +₹{{ settings.cod_fee | default: 80 }}</div>
+        <div>{% render 'icon', name: 'cod' %}{% if settings.cod_fee > 0 %}COD +₹{{ settings.cod_fee }}{% else %}Free COD{% endif %}</div>
         <div>{% render 'icon', name: 'return' %}7-day size exchange</div>
         <div>{% render 'icon', name: 'shield' %}Secure UPI payment</div>
       </div>
@@ -195,7 +195,7 @@
               <li><b>Dispatched within 1–2 days</b> of your order.</li>
               <li><b>Delivered in {{ section.settings.eta_min }}–{{ section.settings.eta_max }} days</b> from your order across India.</li>
             {%- endif -%}
-            <li><b>Free delivery</b> on online payment · Cash on delivery ₹{{ settings.cod_fee | default: 80 }} extra.</li>
+            <li>{% if settings.cod_fee > 0 %}<b>Free delivery</b> on online payment · Cash on delivery ₹{{ settings.cod_fee }} extra.{% else %}<b>Free delivery on every order</b>, including Cash on Delivery.{% endif %}</li>
             <li><b>7-day size exchange:</b> swap for another size within 7 days of delivery. The tee must be unworn, unwashed and with the Zeyov tag attached.</li>
             <li><b>Damaged or wrong item?</b> Tell us within 7 days of delivery and we will replace it free.</li>
           </ul>
