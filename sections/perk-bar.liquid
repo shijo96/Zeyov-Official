@@ -1,6 +1,6 @@
 <div class="wrap">
   <div class="perkbar">
-    <div>{% render 'icon', name: 'truck' %}<p><b>Free Delivery</b>Online Payment Only</p></div>
+    <div>{% render 'icon', name: 'truck' %}<p><b>Free Delivery</b>{% if settings.cod_fee > 0 %}Online Payment Only{% else %}On every order · incl. COD{% endif %}</p></div>
     <div>{% render 'icon', name: 'box' %}<p><b>COD Available</b>{% if settings.cod_fee > 0 %}+ ₹{{ settings.cod_fee }} Extra{% else %}No extra charge{% endif %}</p></div>
     <div>{% render 'icon', name: 'percent' %}<p><b>Cart Discount</b>{{ settings.tier1_qty }}+ = {{ settings.tier1_pct }}% · {{ settings.tier2_qty }}+ = {{ settings.tier2_pct }}%</p></div>
     <div>{% render 'icon', name: 'tag' %}<p><b>Bundle Offer</b>2 pcs = {{ settings.bundle2_pct }}% · 3 pcs = {{ settings.bundle3_pct }}%</p></div>

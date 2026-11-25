@@ -105,7 +105,7 @@
         <div class="zs-qrows" data-quote-rows></div>
         <div class="zs-qsum"><div><span>Per piece</span><b data-per>—</b></div><div class="zs-total"><span>Total</span><b data-total>—</b></div></div>
         <div class="zs-tip zs-tip--dark"><span>%</span><p data-tip></p><button type="button" class="btn btn--sm" data-tip-btn hidden></button></div>
-        {% if section.settings.price_note != blank %}<p class="zs-small">{% if settings.cod_fee > 0 %}{{ section.settings.price_note | replace: '[cod]', settings.cod_fee }}{% else %}{{ section.settings.price_note | replace: ' · COD +₹[cod]', ' · Free Cash on Delivery' | replace: '[cod]', '0' }}{% endif %}</p>{% endif %}
+        {% if section.settings.price_note != blank %}<p class="zs-small">{% if settings.cod_fee > 0 %}{{ section.settings.price_note | replace: '[cod]', settings.cod_fee }}{% else %}{% if section.settings.price_note contains '[cod]' %}Prices include taxes. Free delivery on every order, including Cash on Delivery.{% else %}{{ section.settings.price_note }}{% endif %}{% endif %}</p>{% endif %}
         <div class="zs-policy" role="note">
           <b>Made only for you</b>
           <p>Custom Studio tees are printed or embroidered to your design, so they <strong>can't be returned, refunded or exchanged</strong>, including for size. Please check the <button type="button" class="zs-link" data-open-modal="SizeChart">size chart</button> and your design before ordering. If we make a mistake — the tee arrives damaged or the print doesn't match your approved design — we'll redo it free.</p>

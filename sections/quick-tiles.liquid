@@ -4,7 +4,7 @@
     <a class="qtile qtile--gold" href="{{ section.settings.studio_link | default: '/pages/studio' }}">{% render 'icon', name: 'tee' %}<span>Zeyov<br>Studio</span><small>Design Your Own</small></a>
   </div>
   <div class="perks3">
-    <div>{% render 'icon', name: 'truck' %}Free Delivery<small>(Online Payment)</small></div>
+    <div>{% render 'icon', name: 'truck' %}Free Delivery<small>{% if settings.cod_fee > 0 %}(Online Payment){% else %}(All orders){% endif %}</small></div>
     <div>{% render 'icon', name: 'cod' %}COD<small>{% if settings.cod_fee > 0 %}(+ ₹{{ settings.cod_fee }}){% else %}Free{% endif %}</small></div>
     <div>{% render 'icon', name: 'return' %}7-Day Exchange<small>Easy size swap</small></div>
   </div>

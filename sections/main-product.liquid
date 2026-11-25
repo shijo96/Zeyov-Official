@@ -175,7 +175,7 @@
       <p class="muted" style="font-size:13px">Cart offer: {{ settings.tier1_qty }}+ items = extra {{ settings.tier1_pct }}% off · {{ settings.tier2_qty }}+ items = extra {{ settings.tier2_pct }}% off.</p>
 
       <div class="perks">
-        <div>{% render 'icon', name: 'truck' %}Free delivery (online pay)</div>
+        <div>{% render 'icon', name: 'truck' %}{% if settings.cod_fee > 0 %}Free delivery (online pay){% else %}Free delivery on every order{% endif %}</div>
         <div>{% render 'icon', name: 'cod' %}{% if settings.cod_fee > 0 %}COD +₹{{ settings.cod_fee }}{% else %}Free COD{% endif %}</div>
         <div>{% render 'icon', name: 'return' %}7-day size exchange</div>
         <div>{% render 'icon', name: 'shield' %}Secure UPI payment</div>
